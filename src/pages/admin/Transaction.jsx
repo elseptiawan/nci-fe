@@ -24,9 +24,9 @@ const Transaction = () => {
                     Authorization: `Bearer ${token}`,
                 },
                 params: {
-                    page: currentPage,  // Send the current page in the request
+                    page: page,  // Send the current page in the request
                     itemsPerPage: itemsPerPage,  // Send the number of items per page
-                    search: searchTerm
+                    search: search
                 },
             });
             setTransactions(response.data.data.data);  // Adjust based on the API response structure

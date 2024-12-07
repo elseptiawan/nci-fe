@@ -22,6 +22,9 @@ const TransactionModal = ({ show, onClose, onSave }) => {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
+                params: {
+                    itemsPerPage: 1000
+                }
             });
             setUsers(usersResponse.data.data);
 
@@ -30,6 +33,9 @@ const TransactionModal = ({ show, onClose, onSave }) => {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
+                params: {
+                    itemsPerPage: 1000
+                }
             });
             setProducts(productResponse.data.data.data);
 
@@ -38,6 +44,9 @@ const TransactionModal = ({ show, onClose, onSave }) => {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
+                params: {
+                    itemsPerPage: 1000
+                }
             });
             setWarehouses(warehouseResponse.data.data.data);
         } catch (error) {
