@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
+
+import { isLoggedIn } from '../../utils/auth';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -8,13 +12,23 @@ const Register = () => {
         password: '',
         confirmPassword: '',
     });
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState(''); // 'success' or 'error'
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isLoggedIn()) {
+            // If logged in, redirect to the Product page
+            navigate('/product');
+        }
+    }, [navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         const { name, email, password, confirmPassword } = formData;
 
@@ -23,10 +37,30 @@ const Register = () => {
             return;
         }
 
-        console.log('Name:', name);
-        console.log('Email:', email);
-        console.log('Password:', password);
-        // Add registration logic here
+        try { 
+            const response = await axios.post('register', {
+                name,
+                email,
+                password,
+            });
+
+            // Login successful
+            setMessageType('success');
+            setMessage('Register successful!');
+            setTimeout(() => {
+                navigate('/login'); // Navigate to the dashboard route
+            }, 1000);
+        } catch (error) {
+            // Handle errors
+            if (error.response) {
+                setMessageType('error');
+                setMessage(error.response.data.message || 'Register failed. Please try again.');
+            } else {
+                setMessageType('error');
+                setMessage('An error occurred. Please try again later.');
+            }
+            console.error('Error:', error);
+        }
     };
 
     return (
@@ -36,6 +70,17 @@ const Register = () => {
                     <div className="card">
                         <div className="card-body">
                             <h3 className="text-center">Register</h3>
+                            {/* Display Message */}
+                            {message && (
+                                <div
+                                    className={`alert ${
+                                        messageType === 'success' ? 'alert-success' : 'alert-danger'
+                                    }`}
+                                    role="alert"
+                                >
+                                    {message}
+                                </div>
+                            )}
                             <form onSubmit={handleRegister}>
                                 <div className="mb-3">
                                     <label htmlFor="name" className="form-label">

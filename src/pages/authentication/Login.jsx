@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+
+import { isLoggedIn } from '../../utils/auth';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -10,23 +12,28 @@ const Login = () => {
     const [messageType, setMessageType] = useState(''); // 'success' or 'error'
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (isLoggedIn()) {
+            // If logged in, redirect to the Product page
+            navigate('/product');
+        }
+    }, [navigate]);
+
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try { 
-            const response = await axios.post('http://localhost:8000/api/login', {
+            const response = await axios.post('login', {
                 email,
                 password,
             });
-
-            console.log(response);
 
             // Login successful
             setMessageType('success');
             setMessage('Login successful!');
             localStorage.setItem('token', response.data.data.token); // Save token to local storage
             setTimeout(() => {
-                navigate('/'); // Navigate to the dashboard route
+                navigate('/product'); // Navigate to the dashboard route
             }, 1000);
         } catch (error) {
             // Handle errors
