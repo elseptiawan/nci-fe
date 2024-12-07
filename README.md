@@ -16,8 +16,8 @@ Ensure you have the following installed:
 
 1. **Clone the repository**:
    ```bash
-   git clone <repository-url>
-   cd react-admin-panel
+   git clone https://github.com/elseptiawan/nci-fe
+   cd nci-fe
    ```
 
 2. **Install dependencies**:
