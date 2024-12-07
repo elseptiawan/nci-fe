@@ -33,7 +33,7 @@ Ensure you have the following installed:
    - Create a `.env` file in the root directory.
    - Add the following environment variables:
      ```
-     REACT_APP_API_URL=http://localhost:8000/api
+     REACT_APP_API_URL=http://localhost:8000/api/
      ```
    - Replace `http://localhost:8000/api` with your backend API URL if different.
 
